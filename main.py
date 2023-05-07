@@ -16,19 +16,6 @@ def print_tasks(array):
         print("{}. {}".format(index + 1, each_list))
 
 
-def read_task():
-    try:
-        with open("todo.txt") as file:
-            tasks = file.readlines()
-            to_do_list = []
-            for task in tasks:
-                new_task = task.replace("\n", "")
-                to_do_list.append(new_task)
-            print_tasks(to_do_list)
-    except:
-        print("Can't read the file!")
-
-
 def write_task():
     try:
         with open("todo.txt", 'w') as file:
@@ -47,7 +34,7 @@ while not exit_program:
         case "exit":
             exit_program = True
         case "show":
-            read_task()
+            print_tasks(to_do_list)
         case "add":
             task = input('Enter task: ')
             to_do_list.append(task)
