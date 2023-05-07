@@ -1,5 +1,14 @@
 exit_program = False
-to_do_list = ['cooking']
+to_do_list = []
+
+try:
+    with open("todo.txt") as file:
+        tasks = file.readlines()
+        for task in tasks:
+            new_task = task.replace("\n", "")
+            to_do_list.append(new_task)
+except:
+    print("Can't read the file!")
 
 
 def print_tasks(array):
@@ -7,20 +16,47 @@ def print_tasks(array):
         print("{}. {}".format(index + 1, each_list))
 
 
-def extract_task(array):
-    return " ".join(word for index, word in enumerate(command_and_task) if index > 0)
+def read_task():
+    try:
+        with open("todo.txt") as file:
+            tasks = file.readlines()
+            to_do_list = []
+            for task in tasks:
+                new_task = task.replace("\n", "")
+                to_do_list.append(new_task)
+            print_tasks(to_do_list)
+    except:
+        print("Can't read the file!")
+
+
+def write_task():
+    try:
+        with open("todo.txt", 'w') as file:
+            if len(to_do_list) == 0:
+                file.write('')
+            else:
+                for task in to_do_list:
+                    file.write(task+"\n")
+    except:
+        print("Can't write task to the file!")
 
 
 while not exit_program:
-    command_and_task = input('type command: show, add, remove, or exit: ').split(' ')
-    command = command_and_task[0]
-    if len(command_and_task) > 1:
-        task = extract_task(command_and_task)
-    if command == 'exit':
-        exit_program = True
-    elif command == 'show':
-        print_tasks(to_do_list)
-    elif command == 'add':
-        to_do_list.append(task)
-    elif command == 'remove':
-        to_do_list.remove(task)
+    command = input('choose command: show, add, remove, edit, or exit: ').strip()
+    match command:
+        case "exit":
+            exit_program = True
+        case "show":
+            read_task()
+        case "add":
+            task = input('Enter task: ')
+            to_do_list.append(task)
+            write_task()
+        case "remove":
+            print_tasks(to_do_list)
+            index = int(input('Enter number of task to be removed: '))
+            index = index - 1
+            to_do_list.pop(index)
+            write_task()
+        case _:
+            print('Hey, you entered wrong command')
